@@ -17,7 +17,7 @@ const resolvers = {
 
 
     Mutation: {
-        CreateUser: async (parent,args) => {
+        createUser: async (parent,args) => {
             const user =await User.create(args);
             const token = singleToken(user);
 
@@ -48,7 +48,7 @@ const resolvers = {
         }
         throw new AuthenticationError('log in first');
     },
-    deleteBook: async (parent, args, context) => {
+    removeBook: async (parent, args, context) => {
         if(context.user) {
             const updatedUser = await User.findOneAndUpdate(
                 { _id: context.user._id },
