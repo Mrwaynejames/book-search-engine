@@ -12,14 +12,15 @@ const resolvers = {
             
                 return userData;
         }
+        throw new AuthenticationError('Not logged in')
        } 
     },
 
 
     Mutation: {
-        createUser: async (parent,args) => {
+        addUser: async (parent,args) => {
             const user =await User.create(args);
-            const token = singleToken(user);
+            const token = signToken(user);
 
             return {token,user};
         },
@@ -38,13 +39,13 @@ const resolvers = {
     },
 
     saveBook: async (parent, args, context) => {
-        if (contect.user) {
-            const updateUser = await User.findOneAndUpdate(
+        if (context.user) {
+            const updatedUser = await User.findOneAndUpdate(
                 {_id: context.user._id},
                 {$addToSet: {savedBooks: args.input}},
                 {new: true}
             );
-            return updateUser;
+            return updatedUser;
         }
         throw new AuthenticationError('log in first');
     },
