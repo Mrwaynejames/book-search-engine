@@ -4,15 +4,15 @@ import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap
 import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
-import {useMutation, useQuery} from '@apollo/react-hooks';
+import {useMutation, useQuery} from '@apollo/client';
 import { GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
 
 const SavedBooks = () => {
-  const { loading, data } = useQuery(GET_ME);
-  const [removeBook] = useMutation(REMOVE_BOOK);
+  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
-  const userData = data?.me || [];
+  const { loading, data } = useQuery(GET_ME, { fetchPolicy: "no-cache" });
+  const savedBooks = data?.me.savedBooks || [];
 
   const handleDeleteBook = async (bookId) => {
 
@@ -26,7 +26,8 @@ const SavedBooks = () => {
       });
 
       removeBookId(bookId);
-    } catch (err) { console.error(err);}
+    window.location.reload();
+  } catch (err) { console.error(err);}
   };
 
   // if data isn't here yet, say so

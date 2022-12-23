@@ -6,6 +6,8 @@ mutation loginUser($email: String!, $password: String!) {
       token
       user {
         _id
+        username
+        email
       }
     }
   }
@@ -17,15 +19,6 @@ mutation loginUser($email: String!, $password: String!) {
       _id
       username
       email
-      bookCount
-      savedBooks {
-        # _id
-        bookId
-        authors
-        image
-        link
-        title
-        description
       }
     }
   }
@@ -37,15 +30,6 @@ export const REMOVE_BOOK = gql`
       _id
       username
       email
-      bookCount
-      savedBooks {
-        # _id
-        bookId
-        authors
-        image
-        link
-        title
-        description
       }
     }
   }
@@ -53,22 +37,12 @@ export const REMOVE_BOOK = gql`
 
 export const ADD_USER = gql`
 mutation createUser($username:String!, $email:String!, $password: String!) {
-  createUser(username:$username, email:$email, password: $password) {
+  addUser(username:$username, email:$email, password: $password) {
     user {
       _id
       username
       email
-      bookCount
-      savedBooks {
-        authors
-        bookId
-        image
-        link
-        title
-        description
       }
-    }
-    token
   }
 }
 `;
